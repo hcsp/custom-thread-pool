@@ -1,8 +1,6 @@
 package com.github.hcsp.multithread;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -13,19 +11,12 @@ public class MyThreadPools {
     // 任务等待队列大小为20，如果超过20继续往该线程池中提交任务，这些任务会被悄悄丢弃
     // 线程的名字为"MyThread"
     public static ExecutorService myThreadPool() {
-        int corePoolSize = 10;
-        int maximumPoolSize = 10;
-        long keepAliveTime = 60;
-        TimeUnit unit = TimeUnit.SECONDS;
-        RejectedExecutionHandler handler = new ThreadPoolExecutor.DiscardOldestPolicy();
-        BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(20);
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(corePoolSize,
-                maximumPoolSize,
-                keepAliveTime,
-                unit,
-                workQueue,
+        return new ThreadPoolExecutor(10,
+                10,
+                0,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>(20),
                 r -> new Thread(r, "MyThread"),
-                handler);
-        return threadPoolExecutor;
+                new ThreadPoolExecutor.DiscardPolicy());
     }
 }
