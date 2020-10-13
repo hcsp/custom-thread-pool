@@ -22,11 +22,10 @@ public class MyThreadPools {
 
 
     public static class MyThreadFactory implements ThreadFactory {
-        private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
 
         @Override
         public Thread newThread(Runnable r) {
-            return new Thread(r, "MyThread" + POOL_NUMBER.incrementAndGet());
+            return new Thread(r, "MyThread");
         }
     }
 }
