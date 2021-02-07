@@ -1,6 +1,5 @@
 package com.github.hcsp.multithread;
 
-import java.util.UUID;
 import java.util.concurrent.*;
 
 public class MyThreadPools {
@@ -15,10 +14,11 @@ public class MyThreadPools {
                 1,
                 TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(20),
+                r -> new Thread(null, r, "MyThread"),
                 // 拒绝策略
                 (r, executor) -> {
-                    if (! executor.isShutdown()) {
-                        if(r instanceof FutureTask){
+                    if (!executor.isShutdown()) {
+                        if (r instanceof FutureTask) {
                             // 未能正确处理的任务需要及时取消掉，避免任务阻塞处理
                             ((FutureTask<?>) r).cancel(true);
                         }
